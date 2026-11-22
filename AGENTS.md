@@ -2,7 +2,7 @@
 
 You are working in a repo that turns a founder's studio recording into finished content: a founder video, short
 clips for social, product videos with a voiceover, and the posts and one-pagers that go with them. Read this file
-before you touch anything. *(`CLAUDE.md` and any other agent file point here; this is the single source.)*
+before you touch anything. `CLAUDE.md` points here, and so should any other agent file.
 
 The person you are working for is probably a founder, not an editor or a developer. They will say what they want in
 plain words. Do the work, show them pictures of the result (the `-proof.jpg` contact sheets), and say plainly what
@@ -12,8 +12,8 @@ is finished and what is not.
 
 | Engine | Folder | Makes | Run |
 |---|---|---|---|
-| Interview | `engines/interview/` | The seeded questions and the run of show; a recording into numbered sentences with times | `npm run transcribe`, `npm run soundbites` |
-| Cut | `engines/cut/` | The finished video from `cut.json`: soundbites, cutaways, cards, captions, voiceover, music | `npm run cut` |
+| Interview | `engines/interview/` | The preparation, the seeded questions, and the run of show, then the recording as numbered sentences with times | `npm run transcribe`, `npm run soundbites` |
+| Cut | `engines/cut/` | The storyboard, then the finished video from `cut.json`: soundbites, cutaways, cards, captions, voiceover, music | `npm run cut` |
 | Cards | `engines/cards/` | Titles, figures, quotes, how-to steps with callouts, the website with a QR code, captions, lower thirds, end cards, in the brand (the cut calls it) | `npm run cards` |
 | Screen | `engines/screen/` | Videos of a website or web app (scrolling, or live) and screenshots, desktop or phone, for browser and phone frames | `npm run record`, `npm run shoot` |
 | Voice | `engines/voice/` | An open-source voiceover, one checked take per line | `npm run voice` |
@@ -31,8 +31,10 @@ brands/<brand>/            brand.css, BRAND.md, assets/: one brand drives video 
 projects/<name>/
 ├── footage/               the recordings (not committed: video is large and may show people)
 ├── assets/                screenshots, photos, logos for this project
+├── research.md            links to videos from the founder's market, with notes (engines/interview/PREP.md)
 ├── transcript.json        from npm run transcribe (not committed by default: it holds what people said)
-├── cut.json               the edit: you write this
+├── storyboard.md          the plan, scene by scene (engines/cut/STORYBOARD.md)
+├── cut.json               the edit: you write this from the storyboard
 ├── vo.json, vo/           voiceover lines, and their takes
 ├── build/                 working files (not committed)
 └── out/                   the finished videos and contact sheets (not committed)
@@ -46,25 +48,30 @@ Start a project with `npm run new -- <name> --brand <brand>`.
 
 ### Founder video (the main one)
 
-1. **Record.** The founder books a studio and records the seeded interview
+1. **Prepare.** A week ahead, the founder watches what their market posts, writes and practices their answers, and
+   memorizes the opening line and the close (`engines/interview/PREP.md`). Help if asked, in their words.
+2. **Record.** The founder books a studio and records the seeded interview
    (`engines/interview/QUESTIONS.md`, `RUN-OF-SHOW.md`). Footage goes in `projects/<name>/footage/`.
-2. **Transcribe.** `npm run transcribe -- projects/<name>/footage/interview.mp4 projects/<name>/transcript.json --list`
-3. **Pick soundbites.** Read the whole transcript (`npm run soundbites -- projects/<name>/transcript.json`). For each
-   part of the story, pick the sentence or run of sentences that says it best and stands alone:
-   who they are → what they build → why → who it is for → why those people should care → the ask.
-   A 60-second cut is five or six soundbites; a 2-minute cut is ten or twelve.
-4. **Record the product.** `npm run record` the website (scrolling) and the app (live, or a phone view), and
+3. **Transcribe.** `npm run transcribe -- projects/<name>/footage/interview.mp4 projects/<name>/transcript.json --list`
+4. **Storyboard.** If `storyboard.md` has scenes, follow it. If it is blank, read the whole transcript
+   (`npm run soundbites -- projects/<name>/transcript.json`) and draft one (`engines/cut/STORYBOARD.md`): for each
+   part of the story, the sentence or run of sentences that says it best and stands alone, in this order: who they
+   are, what they build, why, who it is for, why those people should care, and the ask. A 60-second cut has five or
+   six soundbites, and a 2-minute cut ten or twelve. Show the draft to the founder before you write the cut, with
+   what their market's videos have in common (`research.md`) and where theirs differs.
+5. **Record the product.** `npm run record` the website (scrolling) and the app (live, or a phone view), and
    `npm run shoot` the screenshots a step or the site card needs. Ask the founder for their own screen recordings
    of anything that needs clicks, and for photographs.
-5. **Write `cut.json`** (`engines/cut/README.md` is the schema). Mix the interview with the product: open with a
-   title card, put a lower third on the first soundbite, and wherever the founder describes the product, lay the
-   website or app recording over the voice in a browser or phone frame (`frame`). Between soundbites, use stills
-   (they move slowly), a step with a callout, a figure card with its source, and close on the website with a QR
-   code and an end card with the URL and the music credit. Give the music's `bpm` so cards land on the beat.
-6. **Render and look.** `npm run cut -- projects/<name>/cut.json --proof`, then open the `-proof.jpg` and check
+6. **Write `cut.json`** from the storyboard (`engines/cut/README.md` is the schema). Mix the interview with the
+   product: open with a title card, put a lower third on the first soundbite, and wherever the founder describes
+   the product, lay the website or app recording over the voice in a browser or phone frame (`frame`). Between
+   soundbites, use stills (they move slowly), a step with a callout, a figure card with its source, and close on
+   the website with a QR code and an end card with the URL and the music credit. Give the music's `bpm` so cards
+   land on the beat.
+7. **Render and look.** `npm run cut -- projects/<name>/cut.json --proof`, then open the `-proof.jpg` and check
    every frame: captions readable, nothing cropped badly, the right picture over the right words.
-7. **Both shapes.** `--format 16x9` makes the landscape version from the same cut.
-8. **Hand over** the MP4s and the contact sheets, with a list of anything you could not confirm.
+8. **Both shapes.** `--format 16x9` makes the landscape version from the same cut.
+9. **Hand over** the MP4s and the contact sheets, with a list of anything you could not confirm.
 
 ### Short clips
 
@@ -111,6 +118,12 @@ Share the brand (`node scripts/share-brand.mjs <brand>`) and work in `vendor/col
 6. **Keep footage out of git.** `.gitignore` already excludes footage, builds, outputs, transcripts, and audio.
    Commit cut files, voiceover scripts, and brands.
 7. **Plain language** on screen and in captions. Short lines. No jargon the founder did not use.
+8. **Write like a person.** Titles, cards, captions you write, posts, and voiceover lines follow the
+   [antislop](https://github.com/miqdadbadjuber/anti-slop) copywriting rules (`npx skills add miqdadbadjuber/anti-slop`
+   installs them for most agents). In short: no em dashes; none of *unlock, elevate, seamless, cutting-edge,
+   game-changer, journey*; no "it's not X, it's Y"; no lists forced into threes; no runs of short dramatic
+   fragments; no slogans in place of facts; sentence case; say who did what. A quote is exempt: it keeps the
+   speaker's exact words.
 
 ## Commands
 

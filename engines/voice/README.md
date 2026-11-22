@@ -19,8 +19,8 @@ npm run voice -- projects/<name>/vo.json --engine say   # a quick draft in the c
 Takes go to `vo/<id>.mp3` beside `vo.json`. Use one on a segment: `"vo": "vo/walkthrough.mp3"`.
 
 - **The voice** is [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M)'s `af_heart` (Apache-2.0 code and
-  weights): it runs on a laptop and clones no one. Other voices: `am_michael`, `af_bella`, `bf_emma` (British);
-  the model card lists them all.
+  weights): it runs on a laptop and is not a copy of anyone's voice. Other voices: `am_michael`, `af_bella`,
+  `bf_emma` (British); the model card lists them all.
 - **Only changed lines are re-recorded.** A take carries a hash of its words and voice.
 - **Each take is checked**: transcribed back with whisper.cpp and compared with its line, letters only. The check
   catches a dropped or changed word, not a wrong emphasis. Listen to every take.

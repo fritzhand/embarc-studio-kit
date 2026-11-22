@@ -4,6 +4,7 @@ Record the conversation, then turn it into numbered sentences an agent can pick 
 
 | File | Is |
 |---|---|
+| [`PREP.md`](./PREP.md) | How the founder prepares in the week before: watch the market, write, practice, memorize |
 | [`QUESTIONS.md`](./QUESTIONS.md) | The seeded interview: 18 questions in six parts (who you are, what you build, why, who it is for, why they should care, closing) |
 | [`RUN-OF-SHOW.md`](./RUN-OF-SHOW.md) | The 45-minute studio session, minute by minute, and the extra footage worth shooting |
 | `transcribe.mjs` | A recording in, `transcript.json` out: every sentence (`S1`, `S2`…) and word, with times |

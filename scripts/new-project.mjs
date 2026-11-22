@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 /* new-project.mjs: start a project folder for one company's content.
      npm run new -- <name> [--brand <brand>]
-   Makes projects/<name>/ with footage/, assets/, a cut.json to fill in, and a vo.json for voiceover lines. */
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+   Makes projects/<name>/ with footage/, assets/, a blank storyboard.md, a cut.json to fill in, and a vo.json for
+   voiceover lines. */
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -25,8 +26,11 @@ writeFileSync(join(dir, 'cut.json'), JSON.stringify({
     { type: 'card', template: 'end', theme: 'dark', dur: 3.4, transition: 'fadeblack', data: { line: 'Your closing line', url: 'yourcompany.com', small: 'Music: "Inspired" Kevin MacLeod (incompetech.com), CC BY 4.0.' } },
   ],
 }, null, 2) + '\n');
+const blank = readFileSync(join(ROOT, 'engines/cut/STORYBOARD.md'), 'utf8').match(/## Blank storyboard\s+```markdown\n([\s\S]*?)```/);
+if (blank) writeFileSync(join(dir, 'storyboard.md'), blank[1].replace('<video name>', name));
 writeFileSync(join(dir, 'vo.json'), JSON.stringify({ voice: { engine: 'Kokoro-82M', voice: 'af_heart', speed: 1.0 }, pronounce: {}, steps: [] }, null, 2) + '\n');
 console.log(`✓ projects/${name}/
-  1. Put the interview in footage/interview.mp4 (engines/interview/RUN-OF-SHOW.md says what to record)
+  1. Prepare (engines/interview/PREP.md), then put the interview in footage/interview.mp4 (RUN-OF-SHOW.md)
   2. npm run transcribe -- projects/${name}/footage/interview.mp4 projects/${name}/transcript.json --list
-  3. Ask your agent to write the cut (AGENTS.md, "Founder video"), then npm run cut -- projects/${name}/cut.json --proof`);
+  3. Fill in storyboard.md (engines/cut/STORYBOARD.md)
+  4. Ask your agent to write the cut (AGENTS.md, "Founder video"), then npm run cut -- projects/${name}/cut.json --proof`);

@@ -1,8 +1,9 @@
 # The cut engine
 
-`cut.py` turns one `cut.json` into a finished video: founder soundbites, product walkthroughs, screenshots and
-photos, and cards for the title, figures, quotes and the close, with captions, a voiceover where you want one,
-and a music bed that ducks under every spoken line.
+Plan the video first in a storyboard ([`STORYBOARD.md`](./STORYBOARD.md)). `cut.py` then turns one `cut.json` into
+a finished video: founder soundbites, product walkthroughs, screenshots and photos, and cards for the title,
+figures, quotes and the close, with captions, a voiceover where you want one, and a music bed that ducks under
+every spoken line.
 
 ```bash
 npm run cut -- projects/<name>/cut.json                  # the cut's own format
@@ -66,7 +67,7 @@ Segments play in order, joined by a short dissolve (a quicker one between two so
 
 ### Cutaways (`over`)
 
-The founder keeps talking while the product is on screen: the edit that turns an interview into a story.
+The founder keeps talking while the product is on screen. Most of a founder video is built this way.
 
 | Key | Is |
 |---|---|
@@ -135,5 +136,5 @@ Each segment is rendered on its own (cards and captions are HTML drawn by Chrome
 footage), the segments are joined with `xfade`, and the sound is assembled in numpy, sample by sample, so every
 voice sits exactly under its picture. A still's slow push-in is rescaled every frame and eased at both ends. The
 voice chain is a high-pass, light noise reduction, a presence lift, compression, and loudness normalization; the
-music is leveled by measurement, not by ear. This is the editor behind the Embarc Collective Studio's highlight
-reels, made general.
+music is leveled by measurement, not by ear. The Embarc Collective Studio cuts its highlight reels with this
+editor.
