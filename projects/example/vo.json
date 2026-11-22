@@ -1,0 +1,8 @@
+{
+  "_about": "Voiceover lines for the example's product walkthrough. Fictional, like the rest of the example.",
+  "voice": { "engine": "Kokoro-82M", "voice": "af_heart", "speed": 1.0 },
+  "pronounce": {},
+  "steps": [
+    { "id": "walkthrough", "text": "Here is the waiting list. One tap sends the opening to everyone on it." }
+  ]
+}

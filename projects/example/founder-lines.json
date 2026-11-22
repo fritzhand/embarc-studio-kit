@@ -1,0 +1,13 @@
+{
+  "_about": "The example project's stand-in interview: a FICTIONAL founder of the fictional Example Co., answering the seeded questions in engines/interview/QUESTIONS.md. make-example.mjs speaks these lines to make footage/interview.mp4, so the whole pipeline runs before you record anything. Nothing here is a real company, person, or figure.",
+  "voice": { "engine": "Kokoro-82M", "voice": "am_michael", "speed": 1.0 },
+  "steps": [
+    { "id": "q1-who", "text": "I'm Sam Rivera, and I'm the founder of Example Co." },
+    { "id": "q2-before", "text": "Before this, I spent six years running the front desk at a busy dental clinic." },
+    { "id": "q3-what", "text": "Example Co. is a scheduling app that fills last-minute cancellations for dental clinics. When a patient cancels, we text the waiting list and book the first person who says yes." },
+    { "id": "q4-why", "text": "I started it because I watched empty chairs cost our clinic real money, every single week." },
+    { "id": "q5-who-for", "text": "It's for clinic managers, the people who spend their mornings on the phone trying to fill a gap." },
+    { "id": "q6-care", "text": "With Example Co., that gap fills itself, and the manager gets their morning back." },
+    { "id": "q7-ask", "text": "If you run a clinic, try it for a month, and count the chairs you fill." }
+  ]
+}

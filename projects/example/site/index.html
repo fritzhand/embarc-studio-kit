@@ -1,0 +1,57 @@
+<!doctype html>
+<!-- Example Co.'s website: FICTIONAL, made for the example project so the website recorder has a page to scroll.
+     No real company, customer, or figure. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Example Co. · Fill every chair</title>
+<link rel="stylesheet" href="../../../brands/example-co/brand.css">
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: var(--font-body); color: var(--ink); background: var(--paper); line-height: 1.5; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 32px; }
+  header { display: flex; justify-content: space-between; align-items: center; padding: 22px 0; }
+  .logo { display: block; width: 180px; height: 28px; background: url("../../../brands/example-co/assets/logo.svg") left center / contain no-repeat; }
+  nav a { margin-left: 28px; color: var(--ink-muted); text-decoration: none; font-weight: 600; }
+  .btn { display: inline-block; background: var(--accent); color: var(--accent-ink); padding: 14px 26px; border-radius: 99px; font-weight: 600; text-decoration: none; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: var(--weight-display); line-height: 1.05; letter-spacing: -.01em; }
+  .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: center; padding: 72px 0 96px; }
+  .hero h1 { font-size: 72px; } .hero h1 em { color: var(--accent); }
+  .hero p { font-size: 21px; color: var(--ink-muted); margin: 22px 0 30px; max-width: 30em; }
+  .phone { background: #1d1611; border-radius: 40px; padding: 14px; width: 330px; margin: 0 auto; box-shadow: 0 30px 60px rgb(0 0 0 / .25); }
+  .screen { background: #fff; border-radius: 28px; padding: 22px; min-height: 520px; }
+  .row { display: flex; justify-content: space-between; padding: 14px; border-radius: 14px; background: var(--c-cream); margin-top: 10px; font-weight: 600; }
+  .row small { color: var(--ink-muted); font-weight: 400; }
+  .row.ok { background: #dfeee6; }
+  section.band { padding: 96px 0; } section.dark { background: var(--c-forest); color: var(--c-cream); }
+  .three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 40px; }
+  .card { background: #fff; border-radius: 22px; padding: 30px; box-shadow: 0 2px 0 rgb(0 0 0 / .05); }
+  .dark .card { background: var(--c-moss); }
+  .card h3 { font-size: 28px; margin-bottom: 10px; }
+  h2 { font-size: 52px; max-width: 16em; }
+  .steps { counter-reset: s; } .steps .card::before { counter-increment: s; content: counter(s); display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; margin-bottom: 16px; }
+  .price { text-align: center; } .price .big { font-family: var(--font-display); font-size: 80px; color: var(--accent); }
+  footer { padding: 56px 0; color: var(--ink-muted); }
+  .note { font-size: 13px; color: var(--ink-muted); margin-top: 12px; }
+  @media (max-width: 700px) { .hero, .three { grid-template-columns: 1fr; } .hero h1 { font-size: 46px; } h2 { font-size: 36px; } nav { display: none; } }
+</style></head><body>
+<div class="wrap">
+  <header><span class="logo" aria-label="Example Co."></span><nav><a href="#how">How it works</a><a href="#clinics">For clinics</a><a href="#price">Pricing</a><a class="btn" href="#price">Start free</a></nav></header>
+  <div class="hero">
+    <div><h1>Fill every <em>chair.</em></h1>
+      <p>When a patient cancels, Example Co. texts your waiting list and books the first person who says yes. No phone calls.</p>
+      <a class="btn" href="#price">Try it free for a month</a><p class="note">A fictional company, made for the studio kit's example.</p></div>
+    <div class="phone"><div class="screen"><b>Today · 2 openings</b>
+      <div class="row ok">10:30 cleaning <small>Booked by Ana</small></div><div class="row">2:15 check-up <small>Texting 6…</small></div>
+      <div class="row">Waiting list <small>14 patients</small></div></div></div>
+  </div>
+</div>
+<section class="band" id="how"><div class="wrap steps"><h2>Three steps, no phone tag.</h2><div class="three">
+  <div class="card"><h3>A patient cancels</h3><p>Mark the slot open, or let your scheduler do it for you.</p></div>
+  <div class="card"><h3>We text the list</h3><p>Everyone who asked for an earlier slot gets one message.</p></div>
+  <div class="card"><h3>First yes is booked</h3><p>The slot fills, your calendar updates, and the others hear it is taken.</p></div></div></div></section>
+<section class="band dark" id="clinics"><div class="wrap"><h2>Built by someone who ran the front desk.</h2><div class="three">
+  <div class="card"><h3>For managers</h3><p>Your morning back. No more calling down a list.</p></div>
+  <div class="card"><h3>For patients</h3><p>An earlier appointment, with one tap.</p></div>
+  <div class="card"><h3>For dentists</h3><p>A full schedule, even on the days people cancel.</p></div></div></div></section>
+<section class="band price" id="price"><div class="wrap"><h2 style="margin:0 auto">One price per clinic.</h2><p class="big">$0</p><p>for your first month. Sample pricing, made up for the example.</p><p style="margin-top:28px"><a class="btn" href="#">Start your free month</a></p></div></section>
+<footer><div class="wrap">Example Co. · example.com · A fictional company</div></footer>
+</body></html>

@@ -1,0 +1,27 @@
+node_modules/
+.venv/
+vendor/
+build/
+.DS_Store
+
+# media and what people said: large, and may show or quote people
+*.mp4
+*.mov
+*.mkv
+*.m4v
+*.webm
+*.wav
+*.mp3
+*.m4a
+*.aiff
+projects/*/footage/
+projects/*/out/
+projects/*/transcript.json
+projects/*/vo/
+projects/*/founder-lines/
+
+# the example's finished videos, small web copies, for the README
+!docs/*.mp4
+
+# the example's transcript is made by npm run example from a fictional voice, so it can be shared
+!projects/example/transcript.json

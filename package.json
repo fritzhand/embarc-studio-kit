@@ -1,0 +1,25 @@
+{
+  "name": "embarc-studio-kit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Post-production engines for founder content, run by an AI agent: transcribe an interview, pick soundbites, cut them with product walkthroughs and cards, voiceover, captions, and music.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "doctor": "node scripts/doctor.mjs",
+    "new": "node scripts/new-project.mjs",
+    "example": "node scripts/make-example.mjs",
+    "transcribe": "node engines/interview/transcribe.mjs",
+    "soundbites": "node engines/interview/soundbites.mjs",
+    "voice": "node engines/voice/voice.mjs",
+    "cards": "node engines/cards/render.mjs",
+    "shoot": "node engines/cards/shoot.mjs",
+    "record": "node engines/screen/record.mjs",
+    "cut": "python3 engines/cut/cut.py",
+    "music": "node music/fetch-music.mjs",
+    "engines:fetch": "node scripts/fetch-engines.mjs"
+  }
+}

@@ -1,0 +1,47 @@
+<!doctype html>
+<!-- Example Co.'s app, the waiting list: FICTIONAL, and animated on its own so the recorder's live mode has something to
+     capture (a slot opens, the list is texted, the first yes books it). Names and times are made up. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Example Co. · Waiting list</title>
+<link rel="stylesheet" href="../../../brands/example-co/brand.css">
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: var(--font-body); background: var(--c-cream); color: var(--ink); padding: 22px 18px; min-height: 100vh; }
+  h1 { font-family: var(--font-display); font-size: 30px; margin-bottom: 4px; }
+  .sub { color: var(--ink-muted); margin-bottom: 18px; }
+  .slot { background: #fff; border-radius: 18px; padding: 18px; box-shadow: 0 2px 10px rgb(0 0 0 / .06); margin-bottom: 14px; transition: background .4s; }
+  .slot b { font-size: 19px; } .slot .st { color: var(--ink-muted); margin-top: 4px; }
+  .slot.open { outline: 3px solid var(--accent); } .slot.done { background: #dfeee6; outline: none; }
+  .send { display: block; width: 100%; margin-top: 12px; border: 0; background: var(--accent); color: #fff; font: 600 17px var(--font-body); padding: 14px; border-radius: 99px; transition: transform .2s; }
+  .send.press { transform: scale(.95); } .send.hide { display: none; }
+  .list .p { display: flex; justify-content: space-between; padding: 12px 4px; border-bottom: 1px solid var(--rule); opacity: .45; transition: opacity .3s; }
+  .list .p.sent { opacity: 1; } .list .p .tick { color: var(--accent); font-weight: 700; visibility: hidden; } .list .p.sent .tick { visibility: visible; }
+  .toast { position: fixed; left: 18px; right: 18px; bottom: 24px; background: var(--c-forest); color: #fff; padding: 16px; border-radius: 16px; font-weight: 600; transform: translateY(140%); transition: transform .5s; }
+  .toast.show { transform: none; }
+</style></head><body>
+<h1>Today</h1><p class="sub">Example Co. waiting list · sample data</p>
+<div class="slot done"><b>10:30 · Cleaning</b><div class="st">Booked by Ana R.</div></div>
+<div class="slot" id="slot"><b>2:15 · Check-up</b><div class="st" id="st">Booked</div><button class="send hide" id="send">Text the waiting list</button></div>
+<h2 style="font-family:var(--font-display);font-size:20px;margin:22px 0 6px">Waiting list</h2>
+<div class="list" id="list"></div>
+<div class="toast" id="toast">2:15 filled · Marcus said yes</div>
+<script>
+  const names = ['Marcus T.', 'Priya S.', 'Dana W.', 'Luis M.', 'Grace K.', 'Omar B.'];
+  const list = document.getElementById('list');
+  list.innerHTML = names.map(n => `<div class="p"><span>${n}</span><span class="tick">Sent ✓</span></div>`).join('');
+  const $ = id => document.getElementById(id), wait = ms => new Promise(r => setTimeout(r, ms));
+  async function loop() {
+    for (;;) {
+      $('slot').className = 'slot'; $('st').textContent = 'Booked'; $('send').className = 'send hide'; $('toast').className = 'toast';
+      list.querySelectorAll('.p').forEach(p => p.className = 'p');
+      await wait(700); $('slot').className = 'slot open'; $('st').textContent = 'Canceled · open'; $('send').className = 'send';
+      await wait(900); $('send').classList.add('press'); await wait(200); $('send').classList.remove('press');
+      for (const p of list.querySelectorAll('.p')) { p.classList.add('sent'); await wait(220); }
+      await wait(600); $('slot').className = 'slot done'; $('st').textContent = 'Booked by Marcus T.'; $('send').className = 'send hide'; $('toast').className = 'toast show';
+      await wait(2200);
+    }
+  }
+  /* ?still=open holds the moment a slot opens, for a screenshot */
+  if (location.search.includes('still=open')) { $('slot').className = 'slot open'; $('st').textContent = 'Canceled · open'; $('send').className = 'send'; }
+  else loop();
+</script></body></html>

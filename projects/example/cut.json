@@ -1,0 +1,175 @@
+{
+  "_about": "The example cut: a fictional founder's story in about a minute, mixing interview soundbites (picked by sentence id from transcript.json; `npm run soundbites -- projects/example/transcript.json`) with recordings of the fictional website and app in browser and phone frames, a screenshot, a how-to step, a figure, and the website with a QR code. Every name and figure here is made up.",
+  "name": "example",
+  "format": "9x16",
+  "brand": "../../brands/example-co",
+  "transcript": "transcript.json",
+  "captions": true,
+  "music": {
+    "file": "../../music/inspired-kevin-macleod.mp3",
+    "level": -21,
+    "duck": 0.88,
+    "bpm": 120,
+    "credit": "\"Inspired\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 https://creativecommons.org/licenses/by/4.0/"
+  },
+  "segments": [
+    {
+      "type": "card",
+      "template": "title",
+      "dur": 2.8,
+      "data": {
+        "eyebrow": "Founder story",
+        "title": "Why I built *Example Co.*",
+        "sub": "Sam Rivera, founder"
+      }
+    },
+    {
+      "type": "clip",
+      "src": "footage/interview.mp4",
+      "from": "S1",
+      "to": "S2",
+      "label": "who I am",
+      "lower": {
+        "name": "Sam Rivera",
+        "role": "Founder, Example Co.",
+        "at": 0.4,
+        "dur": 4
+      }
+    },
+    {
+      "type": "clip",
+      "src": "footage/interview.mp4",
+      "from": "S3",
+      "to": "S4",
+      "label": "what we build",
+      "over": [
+        {
+          "src": "footage/site-scroll.mp4",
+          "at": 3.8,
+          "dur": 6.5,
+          "frame": {
+            "device": "browser",
+            "url": "example.com",
+            "eyebrow": "The website",
+            "title": "Fill every *chair.*",
+            "caption": "Recorded from the live page with npm run record."
+          }
+        }
+      ]
+    },
+    {
+      "type": "clip",
+      "src": "footage/interview.mp4",
+      "from": "S5",
+      "label": "why"
+    },
+    {
+      "type": "card",
+      "template": "stat",
+      "dur": 3.2,
+      "data": {
+        "eyebrow": "Sample figure",
+        "n": "3",
+        "label": "chairs filled in a week (made up for the example)",
+        "source": "Fictional example. Replace with a figure you can source"
+      }
+    },
+    {
+      "type": "image",
+      "src": "footage/app.png",
+      "dur": 3,
+      "caption": "The waiting list, one tap away",
+      "label": "a screenshot with a caption"
+    },
+    {
+      "type": "clip",
+      "src": "footage/interview.mp4",
+      "from": "S6",
+      "to": "S7",
+      "label": "who it's for, and why they should care",
+      "over": [
+        {
+          "src": "footage/app-phone.mp4",
+          "at": 1.0,
+          "dur": 5.5,
+          "frame": {
+            "device": "phone",
+            "eyebrow": "The app",
+            "title": "The waiting list",
+            "caption": "A slot opens, the list is texted, the first yes books it."
+          }
+        }
+      ]
+    },
+    {
+      "type": "clip",
+      "src": "footage/app-phone.mp4",
+      "in": 0,
+      "out": 5.8,
+      "audio": "mute",
+      "vo": "vo/walkthrough.mp3",
+      "frame": {
+        "device": "phone",
+        "eyebrow": "How it works",
+        "title": "One tap texts the list",
+        "caption": "Narrated with the open-source voice."
+      },
+      "label": "the app, with a voiceover"
+    },
+    {
+      "type": "card",
+      "template": "step",
+      "dur": 3.6,
+      "label": "a how-to step with a callout",
+      "data": {
+        "num": 1,
+        "eyebrow": "How it works",
+        "title": "Send the opening",
+        "body": "One tap texts everyone on the waiting list.",
+        "photo": "footage/app.png",
+        "callouts": [
+          {
+            "x": 50,
+            "y": 33.5,
+            "label": "One tap",
+            "dir": "down",
+            "len": 14
+          }
+        ]
+      }
+    },
+    {
+      "type": "clip",
+      "src": "footage/interview.mp4",
+      "from": "S8",
+      "label": "the ask"
+    },
+    {
+      "type": "card",
+      "template": "site",
+      "dur": 3.6,
+      "label": "the website, with a QR code",
+      "data": {
+        "eyebrow": "Try it",
+        "title": "Start your free month",
+        "body": "Made-up offer for the example.",
+        "url": "https://example.com",
+        "shot": "footage/site.png",
+        "qr": true
+      }
+    },
+    {
+      "type": "card",
+      "template": "end",
+      "theme": "dark",
+      "dur": 3.4,
+      "transition": "fadeblack",
+      "data": {
+        "line": "Fill every *chair.*",
+        "url": "example.com",
+        "qr": true,
+        "small": "A fictional example made with the Embarc Collective Studio kit. Music: \"Inspired\" Kevin MacLeod (incompetech.com), CC BY 4.0."
+      }
+    }
+  ]
+}

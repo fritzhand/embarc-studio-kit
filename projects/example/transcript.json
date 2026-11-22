@@ -1,0 +1,654 @@
+{
+ "source": "interview.mp4",
+ "duration": 55.133333,
+ "model": "ggml-small.en.bin",
+ "made": "2026-11-22",
+ "note": "Machine transcript. Check names, figures and anything you quote against the recording.",
+ "sentences": [
+  {
+   "id": "S1",
+   "start": 0.433,
+   "end": 3.618,
+   "text": "I'm Sam Rivera and I'm the founder of Example Co."
+  },
+  {
+   "id": "S2",
+   "start": 6.009,
+   "end": 10.751,
+   "text": "Before this, I spent six years running the front desk at a busy dental clinic."
+  },
+  {
+   "id": "S3",
+   "start": 13.142,
+   "end": 18.748,
+   "text": "Example Co. is a scheduling app that fills last-minute cancellations for dental clinics."
+  },
+  {
+   "id": "S4",
+   "start": 19.351,
+   "end": 24.605,
+   "text": "When a patient cancels, we text the waiting list and book the first person who says yes."
+  },
+  {
+   "id": "S5",
+   "start": 27.005,
+   "end": 32.544,
+   "text": "I started it because I watched empty chairs cost our clinic real money every single week."
+  },
+  {
+   "id": "S6",
+   "start": 34.939,
+   "end": 39.989,
+   "text": "It's for clinic managers, the people who spend their mornings on the phone trying to fill a gap."
+  },
+  {
+   "id": "S7",
+   "start": 42.353,
+   "end": 47.438,
+   "text": "With Example Co., that gap fills itself and the manager gets their morning back."
+  },
+  {
+   "id": "S8",
+   "start": 49.813,
+   "end": 53.615,
+   "text": "If you run a clinic, try it for a month and count the chairs you fill."
+  }
+ ],
+ "words": [
+  {
+   "w": "I'm",
+   "start": 0.433,
+   "end": 0.475
+  },
+  {
+   "w": "Sam",
+   "start": 0.475,
+   "end": 0.528
+  },
+  {
+   "w": "Rivera",
+   "start": 0.63,
+   "end": 0.656
+  },
+  {
+   "w": "and",
+   "start": 0.656,
+   "end": 0.683
+  },
+  {
+   "w": "I'm",
+   "start": 0.683,
+   "end": 0.725
+  },
+  {
+   "w": "the",
+   "start": 0.731,
+   "end": 0.784
+  },
+  {
+   "w": "founder",
+   "start": 0.784,
+   "end": 0.906
+  },
+  {
+   "w": "of",
+   "start": 0.906,
+   "end": 0.959
+  },
+  {
+   "w": "Example",
+   "start": 0.959,
+   "end": 2.283
+  },
+  {
+   "w": "Co.",
+   "start": 2.283,
+   "end": 3.618
+  },
+  {
+   "w": "Before",
+   "start": 6.009,
+   "end": 6.042
+  },
+  {
+   "w": "this,",
+   "start": 6.035,
+   "end": 6.266
+  },
+  {
+   "w": "I",
+   "start": 6.266,
+   "end": 6.306
+  },
+  {
+   "w": "spent",
+   "start": 6.306,
+   "end": 6.523
+  },
+  {
+   "w": "six",
+   "start": 6.523,
+   "end": 6.655
+  },
+  {
+   "w": "years",
+   "start": 6.655,
+   "end": 6.688
+  },
+  {
+   "w": "running",
+   "start": 6.926,
+   "end": 7.143
+  },
+  {
+   "w": "the",
+   "start": 7.229,
+   "end": 7.308
+  },
+  {
+   "w": "front",
+   "start": 7.308,
+   "end": 7.526
+  },
+  {
+   "w": "desk",
+   "start": 7.526,
+   "end": 7.73
+  },
+  {
+   "w": "at",
+   "start": 7.73,
+   "end": 8.001
+  },
+  {
+   "w": "a",
+   "start": 8.001,
+   "end": 8.06
+  },
+  {
+   "w": "busy",
+   "start": 8.06,
+   "end": 8.159
+  },
+  {
+   "w": "dental",
+   "start": 9.439,
+   "end": 9.498
+  },
+  {
+   "w": "clinic.",
+   "start": 9.716,
+   "end": 10.751
+  },
+  {
+   "w": "Example",
+   "start": 13.142,
+   "end": 13.298
+  },
+  {
+   "w": "Co.",
+   "start": 13.298,
+   "end": 13.735
+  },
+  {
+   "w": "is",
+   "start": 13.735,
+   "end": 13.881
+  },
+  {
+   "w": "a",
+   "start": 13.881,
+   "end": 13.954
+  },
+  {
+   "w": "scheduling",
+   "start": 13.954,
+   "end": 14.682
+  },
+  {
+   "w": "app",
+   "start": 14.682,
+   "end": 14.879
+  },
+  {
+   "w": "that",
+   "start": 15.025,
+   "end": 15.191
+  },
+  {
+   "w": "fills",
+   "start": 15.191,
+   "end": 15.555
+  },
+  {
+   "w": "last-minute",
+   "start": 15.555,
+   "end": 16.325
+  },
+  {
+   "w": "cancellations",
+   "start": 16.346,
+   "end": 17.053
+  },
+  {
+   "w": "for",
+   "start": 17.303,
+   "end": 17.521
+  },
+  {
+   "w": "dental",
+   "start": 17.521,
+   "end": 17.958
+  },
+  {
+   "w": "clinics.",
+   "start": 18.468,
+   "end": 18.748
+  },
+  {
+   "w": "When",
+   "start": 19.351,
+   "end": 19.387
+  },
+  {
+   "w": "a",
+   "start": 19.373,
+   "end": 19.424
+  },
+  {
+   "w": "patient",
+   "start": 19.424,
+   "end": 19.939
+  },
+  {
+   "w": "cancels,",
+   "start": 19.939,
+   "end": 20.594
+  },
+  {
+   "w": "we",
+   "start": 20.594,
+   "end": 20.749
+  },
+  {
+   "w": "text",
+   "start": 20.749,
+   "end": 21.043
+  },
+  {
+   "w": "the",
+   "start": 21.043,
+   "end": 21.264
+  },
+  {
+   "w": "waiting",
+   "start": 21.264,
+   "end": 21.632
+  },
+  {
+   "w": "list",
+   "start": 21.772,
+   "end": 21.904
+  },
+  {
+   "w": "and",
+   "start": 22.051,
+   "end": 22.139
+  },
+  {
+   "w": "book",
+   "start": 22.294,
+   "end": 22.588
+  },
+  {
+   "w": "the",
+   "start": 22.588,
+   "end": 22.809
+  },
+  {
+   "w": "first",
+   "start": 23.17,
+   "end": 23.206
+  },
+  {
+   "w": "person",
+   "start": 23.479,
+   "end": 23.618
+  },
+  {
+   "w": "who",
+   "start": 23.618,
+   "end": 23.839
+  },
+  {
+   "w": "says",
+   "start": 23.839,
+   "end": 23.942
+  },
+  {
+   "w": "yes.",
+   "start": 24.215,
+   "end": 24.605
+  },
+  {
+   "w": "I",
+   "start": 27.005,
+   "end": 27.068
+  },
+  {
+   "w": "started",
+   "start": 27.299,
+   "end": 27.572
+  },
+  {
+   "w": "it",
+   "start": 27.572,
+   "end": 27.713
+  },
+  {
+   "w": "because",
+   "start": 27.713,
+   "end": 27.958
+  },
+  {
+   "w": "I",
+   "start": 28.245,
+   "end": 28.287
+  },
+  {
+   "w": "watched",
+   "start": 28.287,
+   "end": 28.791
+  },
+  {
+   "w": "empty",
+   "start": 28.791,
+   "end": 29.12
+  },
+  {
+   "w": "chairs",
+   "start": 29.162,
+   "end": 29.463
+  },
+  {
+   "w": "cost",
+   "start": 29.582,
+   "end": 29.708
+  },
+  {
+   "w": "our",
+   "start": 29.848,
+   "end": 29.932
+  },
+  {
+   "w": "clinic",
+   "start": 30.093,
+   "end": 30.528
+  },
+  {
+   "w": "real",
+   "start": 30.528,
+   "end": 30.815
+  },
+  {
+   "w": "money",
+   "start": 31.179,
+   "end": 31.214
+  },
+  {
+   "w": "every",
+   "start": 31.214,
+   "end": 31.543
+  },
+  {
+   "w": "single",
+   "start": 31.543,
+   "end": 31.977
+  },
+  {
+   "w": "week.",
+   "start": 31.977,
+   "end": 32.544
+  },
+  {
+   "w": "It's",
+   "start": 34.939,
+   "end": 35.136
+  },
+  {
+   "w": "for",
+   "start": 35.224,
+   "end": 35.285
+  },
+  {
+   "w": "clinic",
+   "start": 35.285,
+   "end": 35.591
+  },
+  {
+   "w": "managers,",
+   "start": 35.591,
+   "end": 36.128
+  },
+  {
+   "w": "the",
+   "start": 36.142,
+   "end": 36.223
+  },
+  {
+   "w": "people",
+   "start": 36.223,
+   "end": 36.352
+  },
+  {
+   "w": "who",
+   "start": 36.454,
+   "end": 36.516
+  },
+  {
+   "w": "spend",
+   "start": 36.516,
+   "end": 36.679
+  },
+  {
+   "w": "their",
+   "start": 36.679,
+   "end": 36.842
+  },
+  {
+   "w": "mornings",
+   "start": 36.842,
+   "end": 37.1
+  },
+  {
+   "w": "on",
+   "start": 37.148,
+   "end": 37.222
+  },
+  {
+   "w": "the",
+   "start": 37.222,
+   "end": 37.304
+  },
+  {
+   "w": "phone",
+   "start": 37.352,
+   "end": 37.392
+  },
+  {
+   "w": "trying",
+   "start": 37.392,
+   "end": 37.78
+  },
+  {
+   "w": "to",
+   "start": 37.868,
+   "end": 37.902
+  },
+  {
+   "w": "fill",
+   "start": 38.004,
+   "end": 38.038
+  },
+  {
+   "w": "a",
+   "start": 38.004,
+   "end": 38.29
+  },
+  {
+   "w": "gap.",
+   "start": 39.017,
+   "end": 39.989
+  },
+  {
+   "w": "With",
+   "start": 42.353,
+   "end": 42.389
+  },
+  {
+   "w": "Example",
+   "start": 42.367,
+   "end": 42.873
+  },
+  {
+   "w": "Co.,",
+   "start": 42.873,
+   "end": 43.387
+  },
+  {
+   "w": "that",
+   "start": 43.387,
+   "end": 43.684
+  },
+  {
+   "w": "gap",
+   "start": 43.684,
+   "end": 43.908
+  },
+  {
+   "w": "fills",
+   "start": 43.908,
+   "end": 44.248
+  },
+  {
+   "w": "itself",
+   "start": 44.291,
+   "end": 44.603
+  },
+  {
+   "w": "and",
+   "start": 44.718,
+   "end": 44.754
+  },
+  {
+   "w": "the",
+   "start": 44.754,
+   "end": 45.087
+  },
+  {
+   "w": "manager",
+   "start": 45.688,
+   "end": 45.724
+  },
+  {
+   "w": "gets",
+   "start": 45.688,
+   "end": 45.984
+  },
+  {
+   "w": "their",
+   "start": 46.353,
+   "end": 46.389
+  },
+  {
+   "w": "morning",
+   "start": 46.411,
+   "end": 46.852
+  },
+  {
+   "w": "back.",
+   "start": 47.127,
+   "end": 47.438
+  },
+  {
+   "w": "If",
+   "start": 49.813,
+   "end": 49.925
+  },
+  {
+   "w": "you",
+   "start": 50.111,
+   "end": 50.157
+  },
+  {
+   "w": "run",
+   "start": 50.204,
+   "end": 50.297
+  },
+  {
+   "w": "a",
+   "start": 50.297,
+   "end": 50.353
+  },
+  {
+   "w": "clinic,",
+   "start": 50.353,
+   "end": 50.882
+  },
+  {
+   "w": "try",
+   "start": 50.882,
+   "end": 51.078
+  },
+  {
+   "w": "it",
+   "start": 51.096,
+   "end": 51.143
+  },
+  {
+   "w": "for",
+   "start": 51.449,
+   "end": 51.496
+  },
+  {
+   "w": "a",
+   "start": 51.459,
+   "end": 51.515
+  },
+  {
+   "w": "month",
+   "start": 51.515,
+   "end": 51.905
+  },
+  {
+   "w": "and",
+   "start": 51.924,
+   "end": 52.091
+  },
+  {
+   "w": "count",
+   "start": 52.305,
+   "end": 52.407
+  },
+  {
+   "w": "the",
+   "start": 52.407,
+   "end": 52.593
+  },
+  {
+   "w": "chairs",
+   "start": 52.593,
+   "end": 52.965
+  },
+  {
+   "w": "you",
+   "start": 52.965,
+   "end": 53.141
+  },
+  {
+   "w": "fill.",
+   "start": 53.141,
+   "end": 53.615
+  }
+ ]
+}

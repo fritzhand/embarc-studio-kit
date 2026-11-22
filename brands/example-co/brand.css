@@ -1,0 +1,139 @@
+@import url("assets/fonts/fonts.css");
+
+/* ============================================================================
+   Example Co.: a FICTIONAL brand that ships with the repo so every template
+   renders out of the box. It is not a real company. Keep it as a reference or
+   delete it once your own brand is in brands/.
+
+   Warm and editorial: cream paper, espresso ink, a burnt-orange accent, a
+   forest-green dark theme. Fraunces for display, Inter for text. The motif is
+   a setting sun: concentric rings in the decor corner.
+
+   The contract every brand.css meets is in brands/README.md.
+   ========================================================================= */
+
+/* ---- 1. Identity and palette ------------------------------------------- */
+
+:root {
+  --brand-name: "Example Co.";
+  --brand-url: "example.com";
+
+  --c-cream:    #F7F2EA;
+  --c-espresso: #241A14;
+  --c-bark:     #6B5A4E;
+  --c-ember:    #C2410C;
+  --c-ember-dk: #B23A0A;
+  --c-apricot:  #F8DCC4;
+  --c-forest:   #1E3A34;
+  --c-moss:     #2B4C45;
+  --c-sage:     #C9D8CF;
+  --c-glow:     #F7A26B;
+
+  --workbench: #E9E4DC;
+}
+
+/* ---- 2. Type ------------------------------------------------------------ */
+
+:root {
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-quote: "Fraunces", Georgia, serif;
+
+  --weight-display: 600;
+  --weight-body: 400;
+  --weight-strong: 600;
+
+  --lh-display: 1.04;
+  --lh-body: 1.48;
+  --track-display: -.012em;
+  --track-eyebrow: .14em;
+  --case-eyebrow: uppercase;
+
+  /* Highlighted words in a headline are set in Fraunces italic. */
+  --style-hl: italic;
+  --style-quote: normal;
+}
+
+/* ---- 3. Shape ----------------------------------------------------------- */
+
+:root {
+  --radius: 2.2;          /* in --u: cards and panels */
+  --radius-button: 99;    /* pill buttons */
+  --portrait-radius: 50%;
+  --bullet-radius: 50%;
+}
+
+/* ---- 4. Themes: what each role is on each background ------------------- */
+
+:root, .theme-light {
+  --paper: var(--c-cream);
+  --ink: var(--c-espresso);
+  --ink-muted: var(--c-bark);
+  --accent: var(--c-ember);
+  --accent-ink: #FFF8F1;
+  --accent-soft: var(--c-apricot);
+  --rule: rgb(36 26 20 / .2);
+  --scrim: rgb(24 16 11 / .84);
+  --decor-a: var(--c-apricot);
+  --decor-b: rgb(194 65 12 / .28);
+}
+
+.theme-dark {
+  --paper: var(--c-forest);
+  --ink: var(--c-cream);
+  --ink-muted: var(--c-sage);
+  --accent: var(--c-glow);
+  --accent-ink: var(--c-espresso);
+  --accent-soft: var(--c-moss);
+  --rule: rgb(247 242 234 / .24);
+  --decor-a: var(--c-moss);
+  --decor-b: rgb(247 162 107 / .3);
+}
+
+.theme-accent {
+  --paper: var(--c-ember-dk);
+  --ink: #FFF8F1;
+  --ink-muted: #FFE4CF;
+  --accent: #FFD3AE;
+  --accent-ink: var(--c-espresso);
+  --accent-soft: #C5521F;
+  --eyebrow-color: #FFF8F1;
+  --rule: rgb(255 248 241 / .38);
+  --decor-a: #C5521F;
+  --decor-b: rgb(255 248 241 / .26);
+}
+
+/* ---- 5. Logo and mark: one file per background ------------------------- */
+
+.logo { background-image: url("assets/logo.svg"); --logo-ratio: 6.69; --logo-scale: 1; }
+.mark { background-image: url("assets/mark.svg"); --mark-ratio: 1; }
+
+.theme-dark .logo   { background-image: url("assets/logo-reversed.svg"); }
+.theme-dark .mark   { background-image: url("assets/mark-reversed.svg"); }
+.theme-accent .logo { background-image: url("assets/logo-white.svg"); }
+.theme-accent .mark { background-image: url("assets/mark-white.svg"); }
+
+/* On a photograph the light-on-dark versions read best. */
+.on-photo .logo { background-image: url("assets/logo-white.svg"); }
+.on-photo .mark { background-image: url("assets/mark-white.svg"); }
+
+/* ---- 6. The motif: a setting sun in the decor corner ------------------- */
+
+.sheet > .decor {
+  --decor-size: 46;
+  background:
+    radial-gradient(circle at var(--sun-x, 100%) var(--sun-y, 0%),
+      var(--decor-a) 0 34%,
+      transparent 34.4% 44%,
+      var(--decor-b) 44.4% 45.6%,
+      transparent 46% 56%,
+      var(--decor-b) 56.4% 57.6%,
+      transparent 58%);
+}
+.sheet[data-decor="tl"] > .decor { --sun-x: 0%;   --sun-y: 0%; }
+.sheet[data-decor="br"] > .decor { --sun-x: 100%; --sun-y: 100%; }
+.sheet[data-decor="bl"] > .decor { --sun-x: 0%;   --sun-y: 100%; }
+
+/* ---- 7. Component touches ---------------------------------------------- */
+
+.quote::before { font-style: italic; }
