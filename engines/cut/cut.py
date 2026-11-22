@@ -18,6 +18,8 @@ import hashlib, json, os, re, subprocess, sys, tempfile
 
 import numpy as np
 
+sys.stdout.reconfigure(line_buffering=True)   # progress lines in order with the engines' own output
+
 SR, FPS = 48000, 30
 SIZES = {"9x16": (1080, 1920), "16x9": (1920, 1080)}
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -117,7 +119,16 @@ os.makedirs(os.path.dirname(OUT), exist_ok=True)
 TR = json.load(open(P(spec["transcript"]), encoding="utf-8")) if spec.get("transcript") else None
 SENT = {s["id"]: s for s in TR["sentences"]} if TR else {}
 WORDS = TR["words"] if TR else []
-CAPTIONS = spec.get("captions", bool(TR))
+CAP = spec.get("captions", bool(TR))
+CAPTIONS = bool(CAP)
+CAPOPT = CAP if isinstance(CAP, dict) else {}
+CAP_STYLE = CAPOPT.get("style", "highlight")       # highlight: the word being spoken lights up; plain: the group only
+CAP_WORDS = int(CAPOPT.get("words") or (3 if FMT == "9x16" else 6))
+# Motion: cards drawn as animated video by the motion engine (HyperFrames), the lower third as a transparent overlay.
+# Off by default; on for the whole cut ("motion": true) or one segment at a time. Without HyperFrames, still cards.
+MOTION = bool(spec.get("motion", False))
+MOTION_TEMPLATES = ("title", "stat", "quote", "end", "site", "step", "lower")
+MOTION_JS = os.path.join(ROOT, "engines", "motion", "motion.mjs")
 letters = lambda t: re.sub(r"[^a-z0-9]+", "", t.lower())
 TR_LETTERS = letters(" ".join(w["w"] for w in WORDS)) if TR else ""
 
@@ -210,14 +221,30 @@ for i in range(1, len(segs)):
     t = starts[i] + durs[i]
 TOTAL = t
 
+# Holds: a line the viewer must read stays up about 0.5 s plus 0.3 s a word, and the last line at least 2 s
+# (measured from HyperFrames' motion doctrine, github.com/heygen-com/hyperframes, Apache-2.0).
+READ_FIELDS = {"title": ("title", "sub"), "stat": ("n", "label"), "quote": ("text", "name"), "end": ("line", "url"),
+               "site": ("title", "body"), "step": ("title", "body"), "image": ("caption",)}
+for i, s in enumerate(segs):
+    t = s.get("template") if s["type"] == "card" else ("image" if s["type"] == "image" else None)
+    if t in READ_FIELDS:
+        d = s.get("data") or {}
+        txt = " ".join(str(d.get(k) or "") for k in READ_FIELDS[t]) if s["type"] == "card" else str(s.get("caption") or "")
+        n = len(re.findall(r"[\w$%'’.-]+", txt))
+        need = max(0.5 + 0.3 * n, 2.0 if i == len(segs) - 1 else 0)
+        if n and s["_dur"] + 0.2 < need:
+            WARN.append(f"segment {i + 1}: on screen {s['_dur']:.1f} s, but its {n} words need about {need:.1f} s to read (0.5 s plus 0.3 s a word)")
+
+
 # ---------------------------------------------------------------- every card, caption and lower third, rendered once
 jobs, cache = [], {}
+CARDS_SIG = hashlib.sha1(open(RENDER, "rb").read()).hexdigest()[:8]
 
 
 def card(template, data, theme="light"):
     # pictures named in a card (a screenshot, a step's photo) are found from the cut file's folder
     data = {k: (P(v) if k in ("photo", "shot", "src") and isinstance(v, str) and not v.startswith(("http:", "https:", "data:")) else v) for k, v in data.items()}
-    key = json.dumps([template, data, FMT, theme, BRAND], sort_keys=True)
+    key = json.dumps([CARDS_SIG, template, data, FMT, theme, BRAND], sort_keys=True)
     out = os.path.join(CARDS, hashlib.sha1(key.encode()).hexdigest()[:16] + ".png")
     if out not in cache:
         cache[out] = True
@@ -227,28 +254,36 @@ def card(template, data, theme="light"):
 
 
 def caption_chunks(ranges):
-    """Caption lines for a soundbite, timed on the soundbite's own clock (its ranges laid end to end)."""
+    """Caption groups for a soundbite, timed on the soundbite's own clock (its ranges laid end to end). A group is a few
+    words that read at a glance: it ends at a sentence end, at a pause of 150 ms or more, or at the word or width limit
+    (the caption rules HyperFrames measured: github.com/heygen-com/hyperframes, Apache-2.0). Each comes back with its
+    words, so the word being spoken can be lit."""
     ws, off = [], 0.0
     for a, b in ranges:
         ws += [{**w, "start": w["start"] - a + off, "end": w["end"] - a + off} for w in WORDS if w["start"] >= a - 0.05 and w["end"] <= b + 0.05]
         off += b - a
-    a, b = 0.0, off
-    maxc = 24 if FMT == "9x16" else 42
-    out, cur = [], []
+    maxc = 18 if FMT == "9x16" else 42
+    groups, cur = [], []
     for w in ws:
-        text = " ".join(x["w"] for x in cur + [w])
-        if cur and (len(text) > maxc or re.search(r"[.?!]$", cur[-1]["w"]) or (re.search(r"[,;:]$", cur[-1]["w"]) and len(text) > maxc * .55)):
-            out.append(cur)
-            cur = [w]
-        else:
-            cur.append(w)
+        if cur:
+            prev, text = cur[-1], " ".join(x["w"] for x in cur + [w])
+            pause = w["start"] - prev["end"]
+            if (len(cur) >= CAP_WORDS or len(text) > maxc or re.search(r"[.?!]$", prev["w"]) or pause >= 0.6
+                    or (len(cur) >= 2 and pause >= 0.15) or (re.search(r"[,;:]$", prev["w"]) and len(text) > maxc * .55)):
+                groups.append(cur)
+                cur = []
+        cur.append(w)
     if cur:
-        out.append(cur)
+        groups.append(cur)
+    for k in range(1, len(groups)):
+        prev, g = groups[k - 1], groups[k]
+        if len(g) == 1 and len(prev) >= 3 and not re.search(r"[.?!]$", prev[-1]["w"]) and g[0]["start"] - prev[-1]["end"] < 0.3:
+            groups[k] = [prev.pop()] + g
     res = []
-    for k, c in enumerate(out):
-        s0 = c[0]["start"] - a
-        e0 = (out[k + 1][0]["start"] - a) if k + 1 < len(out) else (c[-1]["end"] - a + 0.35)
-        res.append((max(0.0, s0), min(b - a, e0), " ".join(x["w"] for x in c)))
+    for k, g in enumerate(groups):
+        # up until the next group starts, but not through a long silence: at most 0.7 s after the last word
+        e0 = min(groups[k + 1][0]["start"], g[-1]["end"] + 0.7) if k + 1 < len(groups) else g[-1]["end"] + 0.35
+        res.append((max(0.0, g[0]["start"]), min(off, e0), g))
     return res
 
 
@@ -275,6 +310,25 @@ def frame_card(fr, theme):
     return card("screen", data, fr.get("theme", theme)), box
 
 
+mjobs, mcache = [], {}
+MOTIONS = os.path.join(BASE, "build", "motion")
+MOTION_SIG = hashlib.sha1(open(MOTION_JS, "rb").read()).hexdigest()[:8] if os.path.exists(MOTION_JS) else "none"
+
+
+def motion(template, data, dur, theme="light"):
+    """An animated card (MP4), or a lower third as a transparent overlay (WebM), drawn by the motion engine for exactly
+    dur seconds, so its exit lands at the end. Rendered once, then reused."""
+    data = {k: (P(v) if k in ("photo", "shot", "src") and isinstance(v, str) and not v.startswith(("http:", "https:", "data:")) else v) for k, v in data.items()}
+    ext = "webm" if template == "lower" else "mp4"
+    key = json.dumps([MOTION_SIG, CARDS_SIG, template, data, FMT, theme, BRAND, round(dur, 3)], sort_keys=True)
+    out = os.path.join(MOTIONS, hashlib.sha1(key.encode()).hexdigest()[:16] + "." + ext)
+    if out not in mcache:
+        mcache[out] = True
+        if not os.path.exists(out):
+            mjobs.append({"template": template, "data": data, "format": FMT, "brand": BRAND, "theme": theme, "dur": round(dur, 3), "out": out})
+    return out
+
+
 plan = []          # per segment: base input, overlays
 for i, s in enumerate(segs):
     p = {"over": [], "pngs": []}
@@ -282,6 +336,8 @@ for i, s in enumerate(segs):
         p["frame_png"], p["box"] = frame_card(s["frame"], s.get("theme", "light"))
     if s["type"] == "card":
         p["base"] = card(s.get("template", "title"), s.get("data", {}), s.get("theme", "light"))
+        if s.get("motion", MOTION) and s.get("template", "title") in MOTION_TEMPLATES:
+            p["base_motion"] = motion(s.get("template", "title"), s.get("data", {}), s["_dur"], s.get("theme", "light"))
     elif s["type"] == "image" and s.get("caption"):
         # the caption lies over the picture, so the picture can move under it and the words stay still
         p["pngs"].append((card("caption", {"text": s["caption"]}), 0.25, s["_dur"]))
@@ -307,11 +363,22 @@ for i, s in enumerate(segs):
         p["over"].append(o)
     if s.get("lower"):
         lw = s["lower"]
-        p["pngs"].append((card("lower", {"name": lw.get("name"), "role": lw.get("role")}), float(lw.get("at", 0.6)),
-                          float(lw.get("at", 0.6)) + float(lw.get("dur", 4.0))))
+        la, ld = float(lw.get("at", 0.6)), min(float(lw.get("dur", 4.0)), s["_dur"] - float(lw.get("at", 0.6)))
+        lpng = card("lower", {"name": lw.get("name"), "role": lw.get("role")})
+        if lw.get("motion", s.get("motion", MOTION)):
+            p["lower_motion"] = (motion("lower", {"name": lw.get("name"), "role": lw.get("role")}, ld), la, la + ld, lpng)
+        else:
+            p["pngs"].append((lpng, la, la + ld))
     if s["type"] == "clip" and s["_audio"] == "voice" and CAPTIONS and s.get("captions", True) and TR:
-        for c0, c1, text in caption_chunks(s["_ranges"]):
-            p["pngs"].append((card("caption", {"text": text}), c0, c1))
+        for c0, c1, g in caption_chunks(s["_ranges"]):
+            words = [x["w"] for x in g]
+            if CAP_STYLE == "plain":
+                p["pngs"].append((card("caption", {"text": " ".join(words)}), c0, c1))
+                continue
+            for k, w in enumerate(g):      # one picture per word, lit while it is spoken
+                a0 = c0 if k == 0 else max(c0, w["start"])
+                a1 = c1 if k == len(g) - 1 else max(a0 + 0.04, g[k + 1]["start"])
+                p["pngs"].append((card("caption", {"words": words, "active": k}), a0, min(a1, c1)))
     plan.append(p)
 
 if jobs:
@@ -319,6 +386,12 @@ if jobs:
     json.dump(jobs, open(jf, "w"))
     print(f"cards: {len(jobs)} to draw")
     run(["node", RENDER, jf])
+if mjobs:
+    jf = os.path.join(BUILD, "motion-jobs.json")
+    json.dump(mjobs, open(jf, "w"))
+    print(f"motion: {len(mjobs)} to animate (HyperFrames)")
+    if subprocess.run(["node", MOTION_JS, jf]).returncode:
+        WARN.append("motion: some cards could not be animated, so they stay still (the messages above say why)")
 
 # ---------------------------------------------------------------- picture, one segment at a time
 def fit(inp, out, mode, cx=0.5, cy=0.5, margin=0.9, bg="paper", tw=None, th=None):
@@ -368,7 +441,10 @@ for i, (s, p) in enumerate(zip(segs, plan)):
 
     box = p.get("box")
     tw, th = (box[2], box[3]) if box else (W, H)
-    if "base" in p:
+    if "base" in p and p.get("base_motion") and os.path.exists(p["base_motion"]):
+        j = add("-i", p["base_motion"])
+        fc.append(f"[{j}:v]scale={W}:{H},setsar=1,fps={FPS},format=yuv420p,tpad=stop_mode=clone:stop_duration=2[b0]")
+    elif "base" in p:
         j = add("-loop", "1", "-framerate", str(FPS), "-t", f"{d:.3f}", "-i", p["base"])
         fc.append(f"[{j}:v]scale={W}:{H},setsar=1,fps={FPS},format=yuv420p[b0]")
     else:
@@ -400,6 +476,14 @@ for i, (s, p) in enumerate(zip(segs, plan)):
                 j = add("-loop", "1", "-framerate", str(FPS), "-t", f"{od:.3f}", "-i", o["_src"])
                 fc.append(still(f"{j}:v", f"m{j}", o.get("fit", "cover" if obox else "contain"), od, o.get("zoom", "in"), float(o.get("zoom_amount", 0.06)),
                                 0.5, o.get("crop_y", 0 if obox else 0.5), o.get("margin", 0.88), o.get("bg", "paper"), otw, oth))
+            elif o.get("overlay"):
+                alpha = ["-c:v", "libvpx-vp9"] if o["_src"].lower().endswith(".webm") else []
+                j = add(*alpha, "-ss", f"{float(o.get('in', 0)):.3f}", "-t", f"{od:.3f}", "-i", o["_src"])
+                fc.append(f"[{j}:v]scale={W}:{H}:force_original_aspect_ratio=decrease,pad={W}:{H}:(ow-iw)/2:(oh-ih)/2:color=black@0,"
+                          f"format=rgba,setpts=PTS-STARTPTS+{a:.3f}/TB[o{j}]")
+                fc.append(f"[{last}][o{j}]overlay=0:0:format=auto:eof_action=pass:enable='between(t,{a:.3f},{a + od:.3f})'[v{j}]")
+                last = f"v{j}"
+                continue
             else:
                 j = add("-ss", f"{float(o.get('in', 0)):.3f}", "-t", f"{od:.3f}", "-i", o["_src"])
                 fc.append(fit(f"{j}:v", f"m{j}", o.get("fit", "cover" if obox else "contain"), 0.5, o.get("crop_y", 0 if obox else 0.5),
@@ -411,6 +495,15 @@ for i, (s, p) in enumerate(zip(segs, plan)):
             fc.append(f"[{src}]setpts=PTS-STARTPTS+{a:.3f}/TB[o{j}]")
         fc.append(f"[{last}][o{j}]overlay=0:0:enable='between(t,{a:.3f},{a + od:.3f})'[v{j}]")
         last = f"v{j}"
+    if p.get("lower_motion"):
+        webm, a, b, lpng = p["lower_motion"]
+        if os.path.exists(webm):
+            j = add("-c:v", "libvpx-vp9", "-i", webm)
+            fc.append(f"[{j}:v]format=rgba,setpts=PTS-STARTPTS+{a:.3f}/TB[o{j}]")
+            fc.append(f"[{last}][o{j}]overlay=0:0:format=auto:eof_action=pass:enable='between(t,{a:.3f},{b:.3f})'[v{j}]")
+            last = f"v{j}"
+        else:
+            p["pngs"].insert(0, (lpng, a, b))
     for png, a, b in p["pngs"]:
         j = add("-i", png)
         fc.append(f"[{j}:v]format=rgba,setpts=PTS-STARTPTS+{a:.3f}/TB[o{j}]")

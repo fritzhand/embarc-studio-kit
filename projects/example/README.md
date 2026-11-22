@@ -12,4 +12,5 @@ contact sheet each (`out/`).
 pause), a lower third, the website scrolling in a browser frame and the app running in a phone frame over the
 founder's voice, a figure card with its source, a captioned screenshot with a slow push-in, the app with a
 voiceover, a how-to step with a callout, the website with a QR code, and an end card with a QR code and the music
-credit. The music's tempo is set, so the cards land on the beat.
+credit. The music's tempo is set, so the cards land on the beat. `"motion": true` animates the cards and the lower
+third (HyperFrames, downloaded the first time), and the captions light up each word as it is spoken.

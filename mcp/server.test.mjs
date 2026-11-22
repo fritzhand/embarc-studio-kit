@@ -8,6 +8,8 @@ import { after, before, describe, it } from 'node:test';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
+import { writeProject } from '../engines/motion/motion.mjs';
+import { checkCut } from './tools.mjs';
 import { createJobs } from './jobs.mjs';
 import { ROOT, createServer } from './server.mjs';
 
@@ -118,6 +120,20 @@ describe('the MCP server', () => {
     assert.match(textOf(good), /Render it with cut_video/);
   });
 
+  it('notes a card too short to read, without refusing it', () => {
+    const { problems, notes } = checkCut({ segments: [{ type: 'card', template: 'title', dur: 1.5, data: { title: 'Why I built a scheduling app for dental clinics', sub: 'Sam Rivera, founder' } }] }, join(root, 'projects', 'acme', 'cut.json'));
+    assert.deepEqual(problems, []);
+    assert.match(notes.join(' '), /12 words need about 4\.1 s/);
+  });
+
+  it('renders a motion graphic only from a HyperFrames project', async () => {
+    mkdirSync(join(root, 'projects', 'acme', 'motion', 'empty'), { recursive: true });
+    const r = await call('render_motion', { project: 'acme', composition: 'projects/acme/motion/empty', file: 'chart' });
+    assert.equal(r.isError, true);
+    assert.match(textOf(r), /has no index\.html/);
+    assert.match(textOf(await call('render_motion', { project: 'acme', composition: '../outside', file: 'chart' })), /outside the kit/);
+  });
+
   it('checks a voiceover script', async () => {
     const bad = await call('write_file', { path: 'projects/acme/vo.json', content: JSON.stringify({ steps: [{ id: 'a b', text: '' }] }) });
     assert.equal(bad.isError, true);
@@ -160,6 +176,27 @@ describe('the MCP server', () => {
     assert.match(textOf(await call('cut_video', { project: 'acme', format: '4x3' })), /format must be one of/);
     assert.match(textOf(await call('get_status', { colour: 'red' })), /not an argument/);
     assert.match(textOf(await call('job_status', { job_id: 'job-999' })), /There is no job-999/);
+  });
+});
+
+describe('the motion engine', () => {
+  it('writes a HyperFrames project from a card, with the brand and its pictures copied in', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'motion-test-'));
+    try {
+      const photo = join(dir, 'step photo.png');
+      writeFileSync(photo, PNG);
+      writeProject({ template: 'step', format: '9x16', brand: join(ROOT, 'brands', 'example-co'), dur: 3.5, data: { num: 1, title: 'Send the opening', photo, callouts: [{ x: 50, y: 40, label: 'One tap' }] } }, join(dir, 'p'));
+      const html = readFileSync(join(dir, 'p', 'index.html'), 'utf8');
+      assert.match(html, /data-composition-id="root"[^>]*data-duration="3.5"/);
+      assert.match(html, /<body class="motion /);
+      assert.match(html, /href="brand\/brand\.css"/);
+      assert.doesNotMatch(html, /file:\/\//);
+      assert.ok(existsSync(join(dir, 'p', 'brand', 'brand.css')));
+      assert.match(html, /src="media\/[0-9a-f]{8}-step-photo\.png"/);
+      assert.throws(() => writeProject({ template: 'caption', format: '9x16', brand: join(ROOT, 'brands', 'example-co'), dur: 2, data: {} }, join(dir, 'q')), /no motion for "caption"/);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 });
 

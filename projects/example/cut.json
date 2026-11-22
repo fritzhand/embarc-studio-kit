@@ -5,6 +5,7 @@
   "brand": "../../brands/example-co",
   "transcript": "transcript.json",
   "captions": true,
+  "motion": true,
   "music": {
     "file": "../../music/inspired-kevin-macleod.mp3",
     "level": -21,
@@ -66,7 +67,7 @@
     {
       "type": "card",
       "template": "stat",
-      "dur": 3.2,
+      "dur": 3.6,
       "data": {
         "eyebrow": "Sample figure",
         "n": "3",

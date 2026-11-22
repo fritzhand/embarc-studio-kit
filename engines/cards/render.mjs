@@ -109,8 +109,11 @@ export const TEMPLATES = {
   } },
   lower: { fields: 'name, role (transparent: lies over the speaker)', transparent: true, html: (d) => `
     <div class="lower"><b>${esc(d.name)}</b>${d.role ? `<span>${esc(d.role)}</span>` : ''}</div>` },
-  caption: { fields: 'text (transparent: lies over video)', transparent: true, html: (d) => `
-    <div class="cap"><span>${esc(d.text)}</span></div>` },
+  caption: { fields: 'text (transparent: lies over video); or words and active, the group with the word being spoken highlighted', transparent: true, html: (d) => {
+    const words = Array.isArray(d.words) ? d.words : null;
+    const inner = words ? words.map((w, i) => (i === d.active ? `<b class="on">${esc(w)}</b>` : esc(w))).join(' ') : esc(d.text);
+    return `<div class="cap"><span>${inner}</span></div>`;
+  } },
   placeholder: { fields: 'title, sub, narrow (stand-in footage for the example project; narrow keeps the words in the middle, for a 9:16 crop)', html: (d) => `
     <div class="frame center placeholder ${d.narrow ? 'narrow' : ''}">
       <p class="eyebrow">Stand-in footage</p>
@@ -119,7 +122,7 @@ export const TEMPLATES = {
     </div>` },
 };
 
-const BASE_CSS = `
+export const BASE_CSS = `
   * { box-sizing: border-box; margin: 0; }
   html, body { width: var(--w); height: var(--h); overflow: hidden; }
   body { --u: calc(var(--short) / 100); background: var(--paper); color: var(--ink);
@@ -213,17 +216,21 @@ const BASE_CSS = `
   .lower { position: absolute; left: calc(var(--u) * 6); bottom: calc(var(--u) * 20); padding: calc(var(--u) * 2.2) calc(var(--u) * 3.2);
     background: var(--paper); color: var(--ink); border-left: calc(var(--u) * 1) solid var(--accent); border-radius: calc(var(--u) * .6);
     display: flex; flex-direction: column; gap: calc(var(--u) * .4); max-width: 80%; }
-  .v .lower { bottom: calc(var(--u) * 64); }
+  .v .lower { bottom: calc(var(--u) * 80); }
   .lower b { font-family: var(--font-display); font-weight: var(--weight-display, 700); font-size: calc(var(--u) * 4); line-height: 1.05; }
   .lower span { font-size: calc(var(--u) * 2.6); color: var(--ink-muted); }
-  .cap { position: absolute; left: 0; right: 0; bottom: calc(var(--u) * 7); display: flex; justify-content: center; padding: 0 calc(var(--u) * 6); }
-  .v .cap { bottom: calc(var(--u) * 40); }
+  .cap { position: absolute; left: 0; right: 0; bottom: calc(var(--u) * 9); display: flex; justify-content: center; padding: 0 calc(var(--u) * 6); }
+  .v .cap { bottom: calc(var(--u) * 64); padding: 0 calc(var(--u) * 12); }
   .cap span { background: rgb(0 0 0 / .72); color: #fff; font-family: var(--font-body); font-weight: var(--weight-strong, 600);
     font-size: calc(var(--u) * 4.6); line-height: 1.2; padding: calc(var(--u) * 1) calc(var(--u) * 2); border-radius: calc(var(--u) * .8); text-align: center; }
   .v .cap span { font-size: calc(var(--u) * 6.4); }
+  .cap b.on { font-weight: inherit; color: var(--accent-ink, #111); background: var(--accent); border-radius: .16em;
+    box-shadow: 0 0 0 .1em var(--accent); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 `;
 
-function page(job) {
+/** The card as a whole HTML page. The motion engine (engines/motion/) wraps the same page in a HyperFrames composition:
+    `extraCss` adds its animations, `bodyAttrs` its timing variables, and `wrap` puts the card inside its timed clip. */
+export function cardPage(job, { extraCss = '', bodyAttrs = '', wrap = (html) => html } = {}) {
   const t = TEMPLATES[job.template];
   if (!t) throw new Error(`no template "${job.template}" (have: ${Object.keys(TEMPLATES).join(', ')})`);
   const [w, h] = SIZES[job.format] || (() => { throw new Error(`format must be 9x16 or 16x9, not "${job.format}"`); })();
@@ -232,9 +239,10 @@ function page(job) {
   const theme = t.transparent ? 'theme-light' : `theme-${job.theme || 'light'}`;
   return `<!doctype html><html><head><meta charset="utf-8">
 <link rel="stylesheet" href="${pathToFileURL(brandCss).href}">
-<style>:root{--w:${w}px;--h:${h}px;--short:${Math.min(w, h)}px}${BASE_CSS}</style></head>
-<body class="${theme} ${h > w ? 'v' : 'h'} ${t.transparent ? 'clear' : ''}">${t.html(job.data || {})}</body></html>`;
+<style>:root{--w:${w}px;--h:${h}px;--short:${Math.min(w, h)}px}${BASE_CSS}${extraCss}</style></head>
+<body class="${theme} ${h > w ? 'v' : 'h'} ${t.transparent ? 'clear' : ''}"${bodyAttrs}>${wrap(t.html(job.data || {}))}</body></html>`;
 }
+const page = (job) => cardPage(job);
 
 export function chromePath() {
   const c = [process.env.CHROME_PATH, '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',

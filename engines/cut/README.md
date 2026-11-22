@@ -33,7 +33,8 @@ Output: `projects/<name>/out/<name>-<format>.mp4` (H.264, 30 fps, AAC, -14 LUFS)
 | `format` | `9x16` | `9x16` (1080 x 1920: Reels, Shorts, TikTok, Stories) or `16x9` (1920 x 1080: YouTube, LinkedIn, your site) |
 | `brand` | `brands/example-co` | A brand folder: the same one the collateral builder uses |
 | `transcript` | none | From `npm run transcribe`. Needed to pick soundbites by sentence and for captions |
-| `captions` | on, with a transcript | Burned-in captions on every spoken soundbite |
+| `captions` | on, with a transcript | Burned-in captions on every spoken soundbite, a few words at a time, with the word being spoken lit in the brand's accent. `{ "style": "plain" }` drops the highlight; `{ "words": 4 }` changes the group size (3 in 9:16, 6 in 16:9). Groups end at a sentence, at a pause, or at the limit, never leave one word on its own, and sit where Reels, Shorts, and TikTok leave room |
+| `motion` | off | `true` animates the cards and the lower third ([`../motion/`](../motion/)); `false` on a segment keeps it still |
 | `music` | none | `file`, `level` (LUFS between lines), `duck` (how far it drops under speech), `credit` (required for CC BY), `bpm` (below) |
 | `loudness` | `-14` | The finished mix, in LUFS |
 | `out` | `out/<name>-{format}.mp4` | Where the file goes |
@@ -78,6 +79,7 @@ The founder keeps talking while the product is on screen. Most of a founder vide
 | `fit`, `bg` | `contain` by default, on a blurred copy of itself (`blur`) for video, the paper color for pictures |
 | `zoom` | For a picture: `in` (the default), `out`, or `false` |
 | `frame` | Shows it inside a browser or phone frame (below) |
+| `overlay` | For a video with transparency (a WebM or ProRes 4444 MOV, such as a HyperFrames motion graphic): laid over the picture as it is, instead of filling the frame |
 
 ### `card`: a title, a figure, a quote, the close
 
@@ -125,7 +127,9 @@ The cut prints a warning, and still renders, when:
 - a `stat` card has no `source`;
 - a `quote` card's words are not in the transcript (a quote is the speaker's exact words);
 - the music has no `credit`;
-- a cutaway starts after its segment ends, or a clip has no sound.
+- a cutaway starts after its segment ends, or a clip has no sound;
+- a card is not on screen long enough to read: about 0.5 s plus 0.3 s a word, and the last one at least 2 s (the hold
+  HyperFrames measured from its own films).
 
 Watch the whole video before you post it. The checks catch what a script can; they cannot hear a mumbled word
 or see a bad frame.

@@ -20,7 +20,7 @@ npm run cards -- jobs.json                    # [{ template, data, format, brand
 | `step` | `num`, `eyebrow`, `title`, `body`, `photo`, `callouts` (`[{ x, y, label, dir, len }]`: x and y in percent of the photo; `dir` left, right, up, or down) |
 | `screen` | A browser or phone frame; the cut engine draws it for a `frame` and lays the recording into it |
 | `lower` | `name`, `role` (transparent, over the speaker) |
-| `caption` | `text` (transparent, over video) |
+| `caption` | `text` (transparent, over video), or `words` and `active`: the group, with the word being spoken lit in the accent (the cut makes one per word) |
 
 QR codes need Python's `segno` (`pip3 install segno`). A screenshot for a `site` card or a step:
 `npm run shoot -- <url> <out.png>` (`--device phone` for a phone's view).

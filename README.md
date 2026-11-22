@@ -21,9 +21,10 @@ or make it yourself with `npm run example`.
 | Engine | What it does |
 |---|---|
 | **Interview** | How to prepare (watch your market, write, practice, memorize), eighteen seeded questions in six parts, a run of show for the studio, and a transcriber that turns the recording into numbered sentences with times |
-| **Cut** | A storyboard template, and the editor. Your agent lists the soundbites by sentence, and the editor splices them with website and app recordings, screenshots, photos, and cards for titles, figures, and quotes, with the product on screen while the founder talks. Stills move slowly, cards land on the beat, captions and a lower third are drawn in your brand, the music ducks under speech, and the mix is leveled to -14 LUFS, in 9:16 and 16:9 |
+| **Cut** | A storyboard template, and the editor. Your agent lists the soundbites by sentence, and the editor splices them with website and app recordings, screenshots, photos, and cards for titles, figures, and quotes, with the product on screen while the founder talks. Stills move slowly, cards land on the beat, captions light up each word as it is spoken, a lower third is drawn in your brand, the music ducks under speech, and the mix is leveled to -14 LUFS, in 9:16 and 16:9 |
 | **Screen** | Records your website scrolling, or your app as it runs, on a desktop or a phone, with no screen-recording software. It takes screenshots too. The editor plays them in browser and phone frames between your soundbites and stills |
 | **Cards** | Title, figure, quote, how-to step with callouts, your website with a QR code, caption, lower third, and end cards, drawn in your brand |
+| **Motion** | Turn on `"motion": true` and the titles, figures, quotes, how-to steps, website and end cards animate, and the lower third slides in over the speaker, drawn from the same brand by [HyperFrames](https://github.com/heygen-com/hyperframes) (Apache-2.0) |
 | **Voice** | An open-source narrator (Kokoro-82M) for product videos, every take checked against its script |
 | **Reel** and **Tour** | A vertical video recorded from your live site, and a narrated Demo button for it, from [history-of-block-printing](https://github.com/fritzhand/history-of-block-printing) |
 | **Collateral** | Posts, slides, flyers, and one-pagers in five formats, from the [collateral builder](https://github.com/fritzhand/collateral-builder), sharing the same brand folder |
@@ -66,6 +67,7 @@ cut that would put a figure with no source, or a quote you did not say, on scree
 | whisper.cpp and a model | transcripts, and checking voice takes |
 | Kokoro-82M (optional) | the open-source voiceover |
 | `npm install` (optional) | the MCP server |
+| HyperFrames (optional) | animated cards; downloads on first use |
 
 ## License
 

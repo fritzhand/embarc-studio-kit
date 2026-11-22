@@ -16,6 +16,7 @@
     "soundbites": "node engines/interview/soundbites.mjs",
     "voice": "node engines/voice/voice.mjs",
     "cards": "node engines/cards/render.mjs",
+    "motion": "node engines/motion/motion.mjs",
     "shoot": "node engines/cards/shoot.mjs",
     "record": "node engines/screen/record.mjs",
     "cut": "python3 engines/cut/cut.py",

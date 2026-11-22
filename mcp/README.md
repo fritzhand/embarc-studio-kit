@@ -50,8 +50,9 @@ it lives in, whatever folder the client starts it from.
 | `screenshot` | A screenshot of a page, desktop or phone (`npm run shoot`), returned as a picture. |
 | `list_card_templates` | The card templates and their fields (`npm run cards -- --list`). |
 | `record_voiceover` | Speaks each line of a voiceover script and checks each take (`npm run voice`). |
-| `cut_video` | Renders a cut in 9:16 or 16:9 with its contact sheet (`npm run cut -- --proof`), returned as a picture. |
+| `cut_video` | Renders a cut in 9:16 or 16:9 with its contact sheet (`npm run cut -- --proof`), returned as a picture. With `"motion": true` in the cut, the cards animate. |
 | `run_example` | The whole pipeline on the fictional founder (`npm run example`). |
+| `render_motion` | Renders a HyperFrames project the assistant built (a chart, kinetic type) into footage: MP4, or WebM with transparency to lie over the picture. |
 | `job_status`, `cancel_job` | Wait for a long job, or stop one. |
 | `fetch_music`, `fetch_engines`, `share_brand` | The example soundtrack, the collateral and reel and tour engines, and a brand shared with the collateral builder. |
 

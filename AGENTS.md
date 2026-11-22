@@ -16,6 +16,7 @@ is finished and what is not.
 | Cut | `engines/cut/` | The storyboard, then the finished video from `cut.json`: soundbites, cutaways, cards, captions, voiceover, music | `npm run cut` |
 | Cards | `engines/cards/` | Titles, figures, quotes, how-to steps with callouts, the website with a QR code, captions, lower thirds, end cards, in the brand (the cut calls it) | `npm run cards` |
 | Screen | `engines/screen/` | Videos of a website or web app (scrolling, or live) and screenshots, desktop or phone, for browser and phone frames | `npm run record`, `npm run shoot` |
+| Motion | `engines/motion/` | Animated cards and lower thirds from the same brand, drawn by HyperFrames (`"motion": true` in a cut) | `npm run motion` |
 | Voice | `engines/voice/` | An open-source voiceover, one checked take per line | `npm run voice` |
 | Reel | `engines/reel/` → `vendor/` | A vertical video recorded from a live website | see its README |
 | Tour | `engines/tour/` → `vendor/` | A narrated Demo button for a website | see its README |
@@ -72,7 +73,7 @@ Start a project with `npm run new -- <name> --brand <brand>`.
    the product, lay the website or app recording over the voice in a browser or phone frame (`frame`). Between
    soundbites, use stills (they move slowly), a step with a callout, a figure card with its source, and close on
    the website with a QR code and an end card with the URL and the music credit. Give the music's `bpm` so cards
-   land on the beat.
+   land on the beat. Add `"motion": true` if the founder wants the cards to move.
 7. **Render and look.** `npm run cut -- projects/<name>/cut.json --proof`, then open the `-proof.jpg` and check
    every frame: captions readable, nothing cropped badly, the right picture over the right words.
 8. **Both shapes.** `--format 16x9` makes the landscape version from the same cut.
@@ -106,6 +107,22 @@ use the reel engine. For a guided tour on the site itself, the tour engine.
 
 Share the brand (`node scripts/share-brand.mjs <brand>`) and work in `vendor/collateral-builder/` by its own
 `AGENTS.md`. Quote cards and carousels come from the transcript, in the founder's exact words.
+
+## Motion and captions
+
+Defaults the kit follows, from the motion doctrine HyperFrames measured on its own films
+([`engines/motion/README.md`](engines/motion/README.md)). Keep to them unless the founder asks otherwise.
+
+- **Holds.** A card stays up about 0.5 s plus 0.3 s for each word on it, and the last one at least 2 s. The cut warns
+  when one is shorter.
+- **Captions.** Three words at a time in 9:16 and up to six in 16:9, breaking at a sentence end or a pause, with the
+  word being spoken lit. In 9:16 they sit above the platforms' own text and buttons. Never place a caption over the
+  founder's face.
+- **Titles land and stay still.** No floating, pulsing, or creeping zoom on words. Photographs may move slowly.
+- **Vary the cards.** Not every scene should open on the same kind of card. A cut that is all title cards and dissolves
+  reads like slides.
+- **For a motion graphic the kit has no card for** (a chart, a map, kinetic type), build it with HyperFrames and lay it
+  in as a clip, or as a transparent overlay (`"overlay": true`).
 
 ## The rules
 
@@ -143,6 +160,7 @@ npm run cards -- --list | --sample <brand dir>
 npm run record -- <url> <out.mp4> [--mode scroll|live] [--device phone]
 npm run shoot -- <url> <out.png> [--device phone]
 npm run cut -- <cut.json> [--format 16x9] [--proof]
+npm run motion -- --sample <brand dir>            # one of each animated card (HyperFrames, downloaded on first use)
 npm run music                                    # the example soundtrack (CC BY 4.0)
 npm run engines:fetch                            # the collateral builder, the reel and tour engines, into vendor/
 npm run mcp -- --list                            # the MCP server's tools and prompts (an MCP client starts the server)

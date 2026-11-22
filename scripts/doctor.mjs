@@ -22,6 +22,7 @@ const rows = [
   ['segno (optional)', ok('python3', ['-c', 'import segno']), 'QR codes on cards', 'pip3 install segno'],
   ['Kokoro (optional)', existsSync(py) && ok(py, ['-c', 'import kokoro, soundfile']), 'voiceover in the open-source voice', 'engines/voice/README.md (or use --engine say for drafts)'],
   ['music', existsSync(join(ROOT, 'music', 'inspired-kevin-macleod.mp3')), 'the example soundtrack', 'npm run music'],
+  ['HyperFrames (optional)', existsSync(join(ROOT, 'node_modules', '.bin', 'hyperframes')), 'animated cards ("motion": true)', 'downloads on first use; engines/motion/README.md'],
   ['MCP server (optional)', existsSync(join(ROOT, 'node_modules', '@modelcontextprotocol', 'sdk')), 'the engines as tools for Claude Desktop and others', 'npm install, then mcp/README.md'],
 ];
 let bad = 0;

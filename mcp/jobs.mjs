@@ -22,7 +22,7 @@ export function createJobs({ cwd, env }) {
 
   /** Starts `cmd args` as a job. `finish(job)` builds the result once the command succeeds. A job with the same `key`
       as one still running is not started twice: the running one is returned. */
-  function start({ label, cmd, args, key, finish }) {
+  function start({ label, cmd, args, key, finish, env: jobEnv }) {
     if (key) for (const j of jobs.values()) if (j.key === key && j.status === 'running') return j;
     const id = `job-${++n}`;
     const job = { id, key, label, started: Date.now(), ended: null, status: 'running', code: null, log: '', result: null, child: null };
@@ -43,7 +43,7 @@ export function createJobs({ cwd, env }) {
       job.status = status;
       settle();
     };
-    const child = spawn(cmd, args, { cwd, env, stdio: ['ignore', 'pipe', 'pipe'] });
+    const child = spawn(cmd, args, { cwd, env: jobEnv ? { ...env, ...jobEnv, PATH: env.PATH } : env, stdio: ['ignore', 'pipe', 'pipe'] });
     job.child = child;
     child.stdout.on('data', add);
     child.stderr.on('data', add);
