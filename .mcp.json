@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "embarc-studio": {
+      "command": "node",
+      "args": [
+        "mcp/server.mjs"
+      ]
+    }
+  }
+}

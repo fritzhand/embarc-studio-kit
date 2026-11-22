@@ -34,7 +34,7 @@ or make it yourself with `npm run example`.
    reads [`AGENTS.md`](AGENTS.md) and knows how the kit works.
 2. **Install the tools:** Node 22+, ffmpeg, Python 3 with numpy, Google Chrome, and whisper.cpp with a model
    ([`engines/interview/README.md`](engines/interview/README.md)). Kokoro is optional
-   ([`engines/voice/README.md`](engines/voice/README.md)). Then `npm run doctor`.
+   ([`engines/voice/README.md`](engines/voice/README.md)). Then `npm install` and `npm run doctor`.
 3. **See it work:** `npm run example` (add `-- --engine say` on a Mac without Kokoro).
 4. **Add your brand:** a folder in `brands/` ([`brands/README.md`](brands/README.md)).
 5. **Prepare** a week ahead ([`engines/interview/PREP.md`](engines/interview/PREP.md)) and start a project:
@@ -47,6 +47,14 @@ or make it yourself with `npm run example`.
    > the product, and the screen recording in footage/ in a phone frame. Use only my exact words and no figures I
    > didn't give you. Show me the contact sheet.
 
+## Use it from Claude Desktop, or any MCP client
+
+The kit is also an [MCP](https://modelcontextprotocol.io) server, so an assistant such as Claude Desktop can run its
+engines as tools, with no terminal: transcribe your interview, draft the storyboard, record your website, and cut the
+video, with each contact sheet shown to it as a picture. It starts from the same workflows as prompts, and it refuses a
+cut that would put a figure with no source, or a quote you did not say, on screen. Setup and the tools are in
+[`mcp/README.md`](mcp/README.md). In Claude Code, opening the kit's folder is enough: its `.mcp.json` names the server.
+
 ## What it needs
 
 | Tool | For |
@@ -57,6 +65,7 @@ or make it yourself with `npm run example`.
 | Google Chrome or Chromium | drawing cards and captions (headless) |
 | whisper.cpp and a model | transcripts, and checking voice takes |
 | Kokoro-82M (optional) | the open-source voiceover |
+| `npm install` (optional) | the MCP server |
 
 ## License
 

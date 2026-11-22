@@ -24,6 +24,11 @@ is finished and what is not.
 `npm run doctor` checks the tools. `npm run example` runs the whole video pipeline on a fictional founder; run it
 once on a new machine to see that everything works.
 
+The same engines are tools in the kit's MCP server (`mcp/`, set up in [`mcp/README.md`](mcp/README.md)), for an
+assistant that is not working in this folder, such as Claude Desktop. The workflows below are its prompts, and its
+`write_file` refuses a cut that names a sentence the transcript does not have, a stat card with no source, or a quote
+that is not in the transcript. If you are connected through it, use its tools in place of the commands.
+
 ## Where things go
 
 ```
@@ -140,4 +145,6 @@ npm run shoot -- <url> <out.png> [--device phone]
 npm run cut -- <cut.json> [--format 16x9] [--proof]
 npm run music                                    # the example soundtrack (CC BY 4.0)
 npm run engines:fetch                            # the collateral builder, the reel and tour engines, into vendor/
+npm run mcp -- --list                            # the MCP server's tools and prompts (an MCP client starts the server)
+npm test                                         # the MCP server's tests
 ```
